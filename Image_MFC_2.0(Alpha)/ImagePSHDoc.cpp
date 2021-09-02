@@ -902,13 +902,16 @@ void CImagePSHDoc::OnTurnImage()
 		return;
 	angle = (int)dlg.m_input1;	// 대화상자 내에 Value 받음
 
-	double radian = angle * 3.141592 / 180.0;
-	double tmp_radian = angle % 90 * 3.141592 / 180.0;
-	double tmp_radian90 = (90 - angle % 90) * 3.141592 / 180.0;
+	double PI = 3.14159265358979;
+	double radian = angle * PI / 180.0;
+	double tmp_radian = angle % 90 * PI / 180.0;
+	double tmp_radian90 = (90 - angle % 90) * PI / 180.0;
 
 	//(중요!) 출력 영상의 높이와 폭을 결정 --> 알고리즘에 따름
-	m_outH = (int)(m_inH * cos(tmp_radian90) + m_inW * cos(tmp_radian));
-	m_outW = (int)(m_inW * cos(tmp_radian) + m_inW * cos(tmp_radian90));
+	int tmp_inSize = 0; // 원본의 가로세로 크기중에 가장 긴 값을 담는다.
+	m_inH >= m_inW ? tmp_inSize = m_inH : tmp_inSize = m_inW;
+	m_outH = (int)(tmp_inSize * cos(tmp_radian90) + tmp_inSize * cos(tmp_radian));
+	m_outW = (int)(tmp_inSize * cos(tmp_radian) + tmp_inSize * cos(tmp_radian90));
 	// 출력 영상 메모리 할당
 	m_OutputImageR = malloc2D(m_outH, m_outW);
 	m_OutputImageG = malloc2D(m_outH, m_outW);
@@ -934,8 +937,8 @@ void CImagePSHDoc::OnTurnImage()
 	int cy = m_outW / 2;
 	for (int i = 0; i < m_outH; i++) {
 		for (int k = 0; k < m_outW; k++) {
-			int oldI = (cos(radian) * (i - cx) + sin(radian) * (k - cy)) + cx;
-			int oldK = (-sin(radian) * (i - cx) + cos(radian) * (k - cy)) + cy;
+			int oldI = (cos(-radian) * (i - cx) + sin(-radian) * (k - cy)) + cx;
+			int oldK = (-sin(-radian) * (i - cx) + cos(-radian) * (k - cy)) + cy;
 			if (((0 <= oldI) && (oldI < m_outH)) && ((0 <= oldK) && (oldK < m_outW))) {
 				m_OutputImageR[i][k] = tempImageR[oldI][oldK];
 				m_OutputImageG[i][k] = tempImageG[oldI][oldK];
