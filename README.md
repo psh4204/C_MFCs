@@ -8,4 +8,5 @@
 ---------------------------------
 ### 버전 
 * Version 1.1 : GrayScale(raw)파일용 간단한 GUI로 만들어진 영상처리기
-* Version 1.2 : Color(png)파일용 영상처리기 기
+* Version 1.2 : Color(png)파일용 영상처리기 베이스
+* Version 2.0(Alpha) : Version 1.1기능을 Color버전으로 업그레이드 
